@@ -1,54 +1,61 @@
 import random;
-import math;
+roles = ['killer','innocent']
+killerCount = 0
+innocentCount = 0
 
-def genRandomNumber(start,end):
-    return random.randint(start,end);
+def genRandomPosition(persons):
+    return random.choice(persons)
 
-def genRole(result): 
-    roles = ['killer','innocent']
+def genRoles(result):    
     while(1):
-        role = random.choice(roles)
-        if role=="killer" and (role not in result):
-            return role;
-        elif role=="innocent":
-            return role;
+        role = genRandomPosition(roles)
+        if role=="killer" and killerCount < 1:
+            killer += 1
+            return role
+        elif role=="innocent" and innocentCount <= personsCount-1:
+            innocentCount += 1
+            return role
 
-def genResult():
+def genPersons(personsCount):
     result = []; 
-    for i in range(n):
-        role = genRole(result)
+    for i in range(personsCount):
+        role = genRoles(result)
         result.append(role)
-    return result;
+    return result    
 
-def killPerson(personNames,killedPersonList):
-    index = random.choice(personNames)
-    while(1):
-        print(1)
-        if index not in killedPersonList:
-            return index
+def genDeathDetails(persons,killerPosition):
+    roundNumber = 0
+    details = []
+    for i in range(len(persons)):
+        if i != killerPosition:
+            details.append("Round : "+str(roundNumber)+" killed person "+ str(i))
+            roundNumber += 1
+    return details
+
+def getKillerPosition(persons):
+    for position in range(len(persons)):
+        if persons[position] == 'killer':
+            return position
+
+def display(details):
+    length = len(details)
+    for index in range(length):
+        print(details[index])
+
+def main():
+    #iteration 1:
+    persons = genPersons(personsCount)
+    display(persons)
+    
+    #iteration 2:
+    killerPosition = getKillerPosition(persons)
+    print('\n\n')
+    deathDetails = genDeathDetails(persons,killerPosition)
+    display(deathDetails)
+
+
 
 print("Enter the number of players...")
-n = input()
+personsCount = input()
 
-result = genResult()
-# #display roles;
-for i in range(n):
-    print(result[i])
-
-personNames = []
-
-for i in range(n):
-    personNames.append(i)
-
-killPersonList = []
-
-for i in range(n):
-    personName = killPerson(personNames,killPersonList)
-    killPersonList.append(personName)
-    print(killPersonList)
-
-
-print("vcnfjn")
-
-# for i in range(len(killPersonList)):
-#     print("round 1 :" + str(killPersonList[i]))
+main()
