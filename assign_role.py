@@ -9,13 +9,17 @@ def genRole(result):
         elif role=="innocent":
             return role;
 
+def genResult():
+    result = []; 
+    for i in range(n):
+        role = genRole(result)
+        result.append(role)
+    return result;
+
 print("Enter the number of players...")
 n = input()
-killerCount = 0;
-result = []; 
-for i in range(n):
-    role = genRole(result)
-    result.append(role)
 
+result = genResult();
+#display roles;
 for i in range(n):
     print(result[i])
