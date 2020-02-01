@@ -30,7 +30,7 @@ def genDeathDetails(persons,killerPosition):
 def toKillOthers(persons,killerPosition,healerPosition):
     roundCount = 1
     while(1):
-        print("Round :"+str(roundCount))
+        print("\nRound :"+str(roundCount))
         isKillerSuspected = 0
         suspectedCount = [0 for i in range(personsCount)]
 
@@ -38,9 +38,11 @@ def toKillOthers(persons,killerPosition,healerPosition):
             randomPosition = genRandomNumber(0,len(persons)-1)
             if randomPosition != killerPosition and i == killerPosition:
                 print("p"+str(i)+": kills "+"p"+str(randomPosition))
-            elif i  == healerPosition:
+                suspectedCount[randomPosition] += 1
+            elif i  == healerPosition and randomPosition != killerPosition:
                 print("p"+str(i)+": heals "+"p"+str(randomPosition))
-                suspectedCount[randomPosition] -= 1
+                if suspectedCount[randomPosition] > 0:
+                    suspectedCount[randomPosition] -= 1
             elif randomPosition != i:
                 suspectedCount[randomPosition] += 1
                 print("p"+str(i)+": suspects "+"p"+str(randomPosition))
@@ -54,9 +56,9 @@ def toKillOthers(persons,killerPosition,healerPosition):
 
         if maxSuspected == killerPosition:
             print "The Killer p"+str(killerPosition)+" has been suspected and killed in round "+str(roundCount)
-            break;
+            break
 
-        elif maxSuspected > 1 and maxSuspected != killerPosition:
+        elif maxSuspected != killerPosition and maxSuspected >= 1:
             print "The innocent p"+str(maxSuspected)+" has been left with killer in round "+str(roundCount)
             break
         roundCount += 1
@@ -67,9 +69,10 @@ def display(details):
         print(details[index])
 
 def main():
+    mid = (personsCount-1)/2
     #iteration 1:
-    killerPosition = genRandomNumber(0,personsCount-1)
-    healerPosition = genRandomNumber(killerPosition,personsCount-1)
+    killerPosition = genRandomNumber(0,mid)
+    healerPosition = genRandomNumber((mid+1),personsCount-1)
 
     persons = genPersons(killerPosition,healerPosition)
     display(persons)
@@ -78,9 +81,9 @@ def main():
 
     # #iteration 2:
     deathDetails = genDeathDetails(persons,killerPosition)
-    display(deathDetails)
+    # display(deathDetails)
 
-    # print('\n\n')
+    print('\n\n')
 
     # #iteration 3:
     toKillOthers(persons,killerPosition,healerPosition)
